@@ -65,12 +65,109 @@ body{font-family:'Inter',sans-serif;background:linear-gradient(135deg,#0f0c29,#1
 /* Hosting */
 .hosting-bar{display:flex;justify-content:center;gap:20px;flex-wrap:wrap}
 .hosting-tag{font-size:0.78rem;font-weight:600;padding:10px 22px;border-radius:10px;background:linear-gradient(135deg,rgba(99,102,241,0.15),rgba(139,92,246,0.15));color:#c7d2fe;border:1px solid rgba(129,140,248,0.25)}
-@media print{body{background:#fff;color:#1e1b4b;padding:20px}.main-title h1{-webkit-text-fill-color:#4338ca}.layer-header{background:rgba(99,102,241,0.08)}.role-card,.frontend-box,.engine-card,.backend-section{background:#f8fafc;border-color:#c7d2fe}.role-card li,.module,.engine-card li{color:#4338ca}.badge{background:#ede9fe;color:#6366f1}.service-tag{background:#dcfce7;color:#166534}.db-tag{background:#fef9c3;color:#854d0e}.output-card{background:#ecfdf5;color:#065f46}.future-tag{background:#ede9fe;color:#6366f1}.hosting-tag{background:#ede9fe;color:#4338ca}}
-@media(max-width:900px){.roles-grid,.engines-grid{grid-template-columns:repeat(2,1fr)}.modules-grid{grid-template-columns:repeat(2,1fr)}.outputs-grid,.future-grid{grid-template-columns:repeat(3,1fr)}.backend-grid{grid-template-columns:1fr}}
+/* Top info bar */
+.top-bar{background:linear-gradient(135deg,rgba(99,102,241,0.12),rgba(139,92,246,0.12));border:1px solid rgba(129,140,248,0.2);border-radius:14px;padding:18px 28px;margin-bottom:32px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+.top-bar-left{display:flex;flex-direction:column;gap:6px}
+.top-bar-links{display:flex;gap:16px;flex-wrap:wrap}
+.top-bar-links a{font-size:0.8rem;font-weight:600;color:#a5b4fc;text-decoration:none;padding:6px 14px;border-radius:8px;background:rgba(99,102,241,0.12);border:1px solid rgba(129,140,248,0.2);transition:all 0.2s;display:inline-flex;align-items:center;gap:6px}
+.top-bar-links a:hover{background:rgba(99,102,241,0.25);color:#e0e7ff;transform:translateY(-1px)}
+.top-bar-right{display:flex;flex-direction:column;gap:4px;text-align:right}
+.top-bar-right .name{font-size:0.85rem;font-weight:700;color:#e0e7ff}
+.top-bar-right .college{font-size:0.72rem;color:#a5b4fc;font-weight:500}
+.top-bar-right .contact{font-size:0.68rem;color:#818cf8;font-weight:400}
+.top-bar-right .contact a{color:#818cf8;text-decoration:none}
+.top-bar-right .contact a:hover{color:#c7d2fe;text-decoration:underline}
+/* Credentials */
+.creds-bar{background:linear-gradient(135deg,rgba(234,179,8,0.08),rgba(251,191,36,0.06));border:1px solid rgba(234,179,8,0.2);border-radius:14px;padding:18px 28px;margin-bottom:32px}
+.creds-bar h3{font-size:0.85rem;font-weight:700;color:#fde68a;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.creds-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.cred-card{background:rgba(234,179,8,0.06);border:1px solid rgba(234,179,8,0.15);border-radius:10px;padding:12px 16px}
+.cred-card .cred-role{font-size:0.75rem;font-weight:700;color:#fbbf24;margin-bottom:8px}
+.cred-card .cred-line{font-size:0.72rem;color:#d4d4d8;margin-bottom:3px;display:flex;gap:6px}
+.cred-card .cred-line span{color:#fde68a;font-weight:600;font-family:'Fira Code','Courier New',monospace;font-size:0.7rem}
+@media print{
+body{background:#fff;color:#111827;padding:20px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.main-title h1{-webkit-text-fill-color:#1e1b4b;font-size:2rem}
+.main-title p{color:#374151}
+.top-bar{background:#f1f5f9;border-color:#a5b4fc}
+.top-bar-links a{background:#e0e7ff;color:#1e1b4b;border-color:#a5b4fc;font-weight:700}
+.top-bar-right .name{color:#111827}
+.top-bar-right .college{color:#1e1b4b}
+.top-bar-right .contact,.top-bar-right .contact a{color:#312e81}
+.creds-bar{background:#fefce8;border-color:#f59e0b}
+.creds-bar h3{color:#78350f}
+.cred-card{background:#fef9c3;border-color:#f59e0b}
+.cred-card .cred-role{color:#78350f}
+.cred-card .cred-line{color:#111827}
+.cred-card .cred-line span{color:#78350f;font-weight:700}
+.layer-header{background:rgba(99,102,241,0.1)}
+.layer-header .num{background:#4338ca;color:#fff}
+.layer-header h2{color:#1e1b4b}
+.role-card,.frontend-box,.engine-card,.backend-section{background:#f8fafc;border-color:#a5b4fc}
+.role-card h3{color:#111827}
+.role-card li{color:#1e1b4b;background:rgba(99,102,241,0.06)}
+.role-card li::before{color:#4338ca}
+.module{color:#1e1b4b;background:#eef2ff;border-color:#a5b4fc;font-weight:600}
+.frontend-box .title-row h3{color:#111827}
+.badge{background:#e0e7ff;color:#312e81;border-color:#a5b4fc;font-weight:700}
+.engine-card .label{color:#4338ca}
+.engine-card h4{color:#111827}
+.engine-card li{color:#1e1b4b;border-color:rgba(99,102,241,0.1)}
+.backend-section h3{color:#111827}
+.service-tag{background:#dcfce7;color:#14532d;border-color:#86efac;font-weight:600}
+.db-tag{background:#fef9c3;color:#713f12;border-color:#fbbf24;font-weight:600}
+.output-card{background:#d1fae5;color:#064e3b;border-color:#6ee7b7;font-weight:600}
+.future-box{background:#f5f3ff;border-color:#a5b4fc}
+.future-box h3{color:#1e1b4b}
+.future-tag{background:#e0e7ff;color:#312e81;border-color:#818cf8;font-weight:500}
+.hosting-tag{background:#e0e7ff;color:#1e1b4b;border-color:#818cf8;font-weight:700}
+.arrow-down{color:#4338ca;opacity:0.8}
+}
+@media(max-width:900px){.roles-grid,.engines-grid{grid-template-columns:repeat(2,1fr)}.modules-grid{grid-template-columns:repeat(2,1fr)}.outputs-grid,.future-grid{grid-template-columns:repeat(3,1fr)}.backend-grid{grid-template-columns:1fr}.top-bar{flex-direction:column;text-align:center}.top-bar-right{text-align:center}.creds-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <div class="container">
+
+<!-- TOP INFO BAR -->
+<div class="top-bar">
+<div class="top-bar-left">
+<div class="top-bar-links">
+<a href="https://goalberg.vercel.app/" target="_blank" rel="noopener">🌐 Live App: https://goalberg.vercel.app</a>
+<a href="https://github.com/Daulat309/goalberg" target="_blank" rel="noopener">📦 GitHub: https://github.com/Daulat309/goalberg</a>
+</div>
+</div>
+<div class="top-bar-right">
+<div class="name">Daulat Sampat Tikhole</div>
+<div class="college">Pune Institute of Computer Technology, Pune-43</div>
+<div class="contact"><a href="mailto:daulattikhole309@gmail.com">daulattikhole309@gmail.com</a> &nbsp;|&nbsp; 8010384306</div>
+</div>
+</div>
+
+<!-- LOGIN CREDENTIALS -->
+<div class="creds-bar">
+<h3>🔑 Demo Login Credentials</h3>
+<div class="creds-grid">
+<div class="cred-card">
+<div class="cred-role">👤 Employee Role</div>
+<div class="cred-line">Email: <span>employee@goalberg.com</span></div>
+<div class="cred-line">Password: <span>Employee@123</span></div>
+</div>
+<div class="cred-card">
+<div class="cred-role">👥 Manager (L1) Role</div>
+<div class="cred-line">Email: <span>manager@goalberg.com</span></div>
+<div class="cred-line">Password: <span>Manager@123</span></div>
+</div>
+<div class="cred-card">
+<div class="cred-role">🛡 Admin / HR Role</div>
+<div class="cred-line">Email: <span>admin@goalberg.com</span></div>
+<div class="cred-line">Password: <span>Admin@123</span></div>
+</div>
+</div>
+<div style="margin-top:12px;padding:8px 14px;background:rgba(234,179,8,0.05);border:1px solid rgba(234,179,8,0.12);border-radius:8px;font-size:0.72rem;color:#d4d4d8">
+<strong style="color:#fbbf24">Alternative Access:</strong> Role-based user journey switching is supported for Employee, Manager, and Admin workflows.
+</div>
+</div>
 
 <div class="main-title">
 <h1>⚙ Goalberg — Enterprise Architecture</h1>
@@ -170,7 +267,7 @@ body{font-family:'Inter',sans-serif;background:linear-gradient(135deg,#0f0c29,#1
 <div class="engine-card">
 <div class="label">Module E</div>
 <h4>📐 KPI Scoring Engine</h4>
-<ul><li>Numeric KPI scoring</li><li>Percentage KPI scoring</li><li>Timeline KPI scoring</li><li>Zero-based KPI scoring</li></ul>
+<ul><li>Numeric KPI scoring</li><li>Percentage KPI scoring</li><li>Timeline-based KPI evaluation</li><li>Zero-based KPI scoring</li></ul>
 </div>
 <div class="engine-card">
 <div class="label">Module F</div>
@@ -180,7 +277,7 @@ body{font-family:'Inter',sans-serif;background:linear-gradient(135deg,#0f0c29,#1
 <div class="engine-card">
 <div class="label">Module G</div>
 <h4>🛡 Governance &amp; Audit</h4>
-<ul><li>Completion monitoring</li><li>Governance lifecycle</li><li>Audit-ready architecture</li></ul>
+<ul><li>Completion monitoring</li><li>Governance lifecycle</li><li>Audit logging &amp; governance architecture</li></ul>
 </div>
 <div class="engine-card">
 <div class="label">Module H</div>
@@ -265,7 +362,8 @@ body{font-family:'Inter',sans-serif;background:linear-gradient(135deg,#0f0c29,#1
 </div>
 
 <div style="text-align:center;margin-top:36px;padding:16px;border-top:1px solid rgba(129,140,248,0.15)">
-<p style="font-size:0.7rem;color:#64748b">Goalberg Enterprise Architecture v1.0 &nbsp;|&nbsp; AtomQuest 2026 &nbsp;|&nbsp; Confidential</p>
+<p style="font-size:0.7rem;color:#64748b">Goalberg Enterprise Architecture v1.0 &nbsp;|&nbsp; AtomQuest 2026 &nbsp;|&nbsp; Daulat Sampat Tikhole &nbsp;|&nbsp; PICT, Pune-43</p>
+<p style="font-size:0.65rem;color:#475569;margin-top:6px;font-style:italic">Scalable enterprise workflow platform for KPI governance, performance tracking, analytics, and organizational alignment.</p>
 </div>
 
 </div>

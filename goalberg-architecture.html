@@ -1,273 +1,990 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Goalberg — Enterprise Architecture</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Inter',sans-serif;background:linear-gradient(135deg,#0f0c29,#1a1a3e,#24243e);color:#e0e0ff;min-height:100vh;padding:40px 20px}
-.container{max-width:1400px;margin:0 auto}
-.main-title{text-align:center;margin-bottom:48px}
-.main-title h1{font-size:2.2rem;font-weight:800;background:linear-gradient(135deg,#60a5fa,#a78bfa,#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-0.5px}
-.main-title p{color:#94a3b8;font-size:0.95rem;margin-top:8px;font-weight:300}
-.layer{margin-bottom:24px;position:relative}
-.layer-header{display:flex;align-items:center;gap:10px;margin-bottom:16px;padding:10px 20px;background:linear-gradient(90deg,rgba(99,102,241,0.15),transparent);border-left:3px solid #818cf8;border-radius:0 8px 8px 0}
-.layer-header .num{background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;flex-shrink:0}
-.layer-header h2{font-size:1rem;font-weight:700;color:#c7d2fe;text-transform:uppercase;letter-spacing:1.5px}
-/* Roles */
-.roles-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.role-card{background:linear-gradient(145deg,rgba(30,27,75,0.8),rgba(49,46,100,0.6));border:1px solid rgba(129,140,248,0.2);border-radius:14px;padding:22px;position:relative;overflow:hidden}
-.role-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:14px 14px 0 0}
-.role-card:nth-child(1)::before{background:linear-gradient(90deg,#3b82f6,#60a5fa)}
-.role-card:nth-child(2)::before{background:linear-gradient(90deg,#8b5cf6,#a78bfa)}
-.role-card:nth-child(3)::before{background:linear-gradient(90deg,#6366f1,#818cf8)}
-.role-card h3{font-size:0.95rem;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px}
-.role-card h3 .icon{font-size:1.2rem}
-.role-card ul{list-style:none;display:flex;flex-direction:column;gap:6px}
-.role-card li{font-size:0.78rem;color:#a5b4fc;display:flex;align-items:center;gap:6px;padding:4px 10px;background:rgba(99,102,241,0.08);border-radius:6px}
-.role-card li::before{content:'›';color:#818cf8;font-weight:700;font-size:1rem}
-/* Arrow between layers */
-.arrow-down{text-align:center;padding:12px 0;color:#4f46e5;font-size:1.8rem;opacity:0.6}
-/* Frontend */
-.frontend-box{background:linear-gradient(145deg,rgba(30,27,75,0.7),rgba(49,46,100,0.5));border:1px solid rgba(129,140,248,0.2);border-radius:16px;padding:24px}
-.frontend-box .title-row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:18px}
-.frontend-box .title-row h3{font-size:1.05rem;font-weight:700;color:#e0e7ff}
-.badge-row{display:flex;gap:8px;flex-wrap:wrap}
-.badge{font-size:0.65rem;font-weight:600;padding:4px 10px;border-radius:20px;background:rgba(99,102,241,0.15);color:#a5b4fc;border:1px solid rgba(129,140,248,0.25)}
-.modules-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.module{background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.15);border-radius:10px;padding:12px 14px;font-size:0.78rem;font-weight:500;color:#c7d2fe;text-align:center;transition:all 0.2s}
-.module:hover{background:rgba(99,102,241,0.18);transform:translateY(-1px)}
-/* Business engines */
-.engines-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-.engine-card{background:linear-gradient(145deg,rgba(30,27,75,0.8),rgba(49,46,100,0.6));border:1px solid rgba(129,140,248,0.15);border-radius:12px;padding:16px;position:relative}
-.engine-card .label{font-size:0.6rem;font-weight:700;color:#818cf8;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;opacity:0.8}
-.engine-card h4{font-size:0.82rem;font-weight:700;color:#e0e7ff;margin-bottom:10px}
-.engine-card ul{list-style:none;display:flex;flex-direction:column;gap:4px}
-.engine-card li{font-size:0.72rem;color:#94a3b8;padding:3px 0;border-bottom:1px solid rgba(99,102,241,0.06)}
-.engine-card li:last-child{border-bottom:none}
-/* Backend */
-.backend-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-.backend-section{background:linear-gradient(145deg,rgba(30,27,75,0.8),rgba(49,46,100,0.5));border:1px solid rgba(129,140,248,0.2);border-radius:14px;padding:20px}
-.backend-section h3{font-size:0.9rem;font-weight:700;color:#e0e7ff;margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.service-list{display:flex;flex-wrap:wrap;gap:8px}
-.service-tag{font-size:0.72rem;font-weight:500;padding:6px 12px;border-radius:8px;background:rgba(34,197,94,0.1);color:#86efac;border:1px solid rgba(34,197,94,0.2)}
-.db-tag{font-size:0.72rem;font-weight:500;padding:6px 12px;border-radius:8px;background:rgba(234,179,8,0.1);color:#fde68a;border:1px solid rgba(234,179,8,0.2);font-family:'Fira Code','Courier New',monospace}
-/* Outputs */
-.outputs-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
-.output-card{background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);border-radius:10px;padding:14px 10px;text-align:center;font-size:0.75rem;font-weight:500;color:#6ee7b7}
-/* Future */
-.future-box{background:linear-gradient(145deg,rgba(30,27,75,0.5),rgba(49,46,100,0.3));border:2px dashed rgba(129,140,248,0.25);border-radius:14px;padding:20px}
-.future-box h3{font-size:0.9rem;font-weight:700;color:#a5b4fc;margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.future-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
-.future-tag{font-size:0.7rem;font-weight:500;padding:8px 6px;border-radius:8px;background:rgba(129,140,248,0.06);color:#818cf8;border:1px dashed rgba(129,140,248,0.2);text-align:center;opacity:0.85}
-/* Hosting */
-.hosting-bar{display:flex;justify-content:center;gap:20px;flex-wrap:wrap}
-.hosting-tag{font-size:0.78rem;font-weight:600;padding:10px 22px;border-radius:10px;background:linear-gradient(135deg,rgba(99,102,241,0.15),rgba(139,92,246,0.15));color:#c7d2fe;border:1px solid rgba(129,140,248,0.25)}
-@media print{body{background:#fff;color:#1e1b4b;padding:20px}.main-title h1{-webkit-text-fill-color:#4338ca}.layer-header{background:rgba(99,102,241,0.08)}.role-card,.frontend-box,.engine-card,.backend-section{background:#f8fafc;border-color:#c7d2fe}.role-card li,.module,.engine-card li{color:#4338ca}.badge{background:#ede9fe;color:#6366f1}.service-tag{background:#dcfce7;color:#166534}.db-tag{background:#fef9c3;color:#854d0e}.output-card{background:#ecfdf5;color:#065f46}.future-tag{background:#ede9fe;color:#6366f1}.hosting-tag{background:#ede9fe;color:#4338ca}}
-@media(max-width:900px){.roles-grid,.engines-grid{grid-template-columns:repeat(2,1fr)}.modules-grid{grid-template-columns:repeat(2,1fr)}.outputs-grid,.future-grid{grid-template-columns:repeat(3,1fr)}.backend-grid{grid-template-columns:1fr}}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goalberg — Enterprise Architecture</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #1a1a3e, #24243e);
+            color: #e0e0ff;
+            min-height: 100vh;
+            padding: 40px 20px
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto
+        }
+
+        .main-title {
+            text-align: center;
+            margin-bottom: 48px
+        }
+
+        .main-title h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #60a5fa, #a78bfa, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px
+        }
+
+        .main-title p {
+            color: #94a3b8;
+            font-size: 0.95rem;
+            margin-top: 8px;
+            font-weight: 300
+        }
+
+        .layer {
+            margin-bottom: 24px;
+            position: relative
+        }
+
+        .layer-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+            padding: 10px 20px;
+            background: linear-gradient(90deg, rgba(99, 102, 241, 0.15), transparent);
+            border-left: 3px solid #818cf8;
+            border-radius: 0 8px 8px 0
+        }
+
+        .layer-header .num {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: #fff;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            flex-shrink: 0
+        }
+
+        .layer-header h2 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #c7d2fe;
+            text-transform: uppercase;
+            letter-spacing: 1.5px
+        }
+
+        /* Roles */
+        .roles-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px
+        }
+
+        .role-card {
+            background: linear-gradient(145deg, rgba(30, 27, 75, 0.8), rgba(49, 46, 100, 0.6));
+            border: 1px solid rgba(129, 140, 248, 0.2);
+            border-radius: 14px;
+            padding: 22px;
+            position: relative;
+            overflow: hidden
+        }
+
+        .role-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            border-radius: 14px 14px 0 0
+        }
+
+        .role-card:nth-child(1)::before {
+            background: linear-gradient(90deg, #3b82f6, #60a5fa)
+        }
+
+        .role-card:nth-child(2)::before {
+            background: linear-gradient(90deg, #8b5cf6, #a78bfa)
+        }
+
+        .role-card:nth-child(3)::before {
+            background: linear-gradient(90deg, #6366f1, #818cf8)
+        }
+
+        .role-card h3 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px
+        }
+
+        .role-card h3 .icon {
+            font-size: 1.2rem
+        }
+
+        .role-card ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 6px
+        }
+
+        .role-card li {
+            font-size: 0.78rem;
+            color: #a5b4fc;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            background: rgba(99, 102, 241, 0.08);
+            border-radius: 6px
+        }
+
+        .role-card li::before {
+            content: '›';
+            color: #818cf8;
+            font-weight: 700;
+            font-size: 1rem
+        }
+
+        /* Arrow between layers */
+        .arrow-down {
+            text-align: center;
+            padding: 12px 0;
+            color: #4f46e5;
+            font-size: 1.8rem;
+            opacity: 0.6
+        }
+
+        /* Frontend */
+        .frontend-box {
+            background: linear-gradient(145deg, rgba(30, 27, 75, 0.7), rgba(49, 46, 100, 0.5));
+            border: 1px solid rgba(129, 140, 248, 0.2);
+            border-radius: 16px;
+            padding: 24px
+        }
+
+        .frontend-box .title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 18px
+        }
+
+        .frontend-box .title-row h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #e0e7ff
+        }
+
+        .badge-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap
+        }
+
+        .badge {
+            font-size: 0.65rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: rgba(99, 102, 241, 0.15);
+            color: #a5b4fc;
+            border: 1px solid rgba(129, 140, 248, 0.25)
+        }
+
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px
+        }
+
+        .module {
+            background: rgba(99, 102, 241, 0.08);
+            border: 1px solid rgba(99, 102, 241, 0.15);
+            border-radius: 10px;
+            padding: 12px 14px;
+            font-size: 0.78rem;
+            font-weight: 500;
+            color: #c7d2fe;
+            text-align: center;
+            transition: all 0.2s
+        }
+
+        .module:hover {
+            background: rgba(99, 102, 241, 0.18);
+            transform: translateY(-1px)
+        }
+
+        /* Business engines */
+        .engines-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px
+        }
+
+        .engine-card {
+            background: linear-gradient(145deg, rgba(30, 27, 75, 0.8), rgba(49, 46, 100, 0.6));
+            border: 1px solid rgba(129, 140, 248, 0.15);
+            border-radius: 12px;
+            padding: 16px;
+            position: relative
+        }
+
+        .engine-card .label {
+            font-size: 0.6rem;
+            font-weight: 700;
+            color: #818cf8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+            opacity: 0.8
+        }
+
+        .engine-card h4 {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #e0e7ff;
+            margin-bottom: 10px
+        }
+
+        .engine-card ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 4px
+        }
+
+        .engine-card li {
+            font-size: 0.72rem;
+            color: #94a3b8;
+            padding: 3px 0;
+            border-bottom: 1px solid rgba(99, 102, 241, 0.06)
+        }
+
+        .engine-card li:last-child {
+            border-bottom: none
+        }
+
+        /* Backend */
+        .backend-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px
+        }
+
+        .backend-section {
+            background: linear-gradient(145deg, rgba(30, 27, 75, 0.8), rgba(49, 46, 100, 0.5));
+            border: 1px solid rgba(129, 140, 248, 0.2);
+            border-radius: 14px;
+            padding: 20px
+        }
+
+        .backend-section h3 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #e0e7ff;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px
+        }
+
+        .service-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px
+        }
+
+        .service-tag {
+            font-size: 0.72rem;
+            font-weight: 500;
+            padding: 6px 12px;
+            border-radius: 8px;
+            background: rgba(34, 197, 94, 0.1);
+            color: #86efac;
+            border: 1px solid rgba(34, 197, 94, 0.2)
+        }
+
+        .db-tag {
+            font-size: 0.72rem;
+            font-weight: 500;
+            padding: 6px 12px;
+            border-radius: 8px;
+            background: rgba(234, 179, 8, 0.1);
+            color: #fde68a;
+            border: 1px solid rgba(234, 179, 8, 0.2);
+            font-family: 'Fira Code', 'Courier New', monospace
+        }
+
+        /* Outputs */
+        .outputs-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px
+        }
+
+        .output-card {
+            background: rgba(16, 185, 129, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 10px;
+            padding: 14px 10px;
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #6ee7b7
+        }
+
+        /* Future */
+        .future-box {
+            background: linear-gradient(145deg, rgba(30, 27, 75, 0.5), rgba(49, 46, 100, 0.3));
+            border: 2px dashed rgba(129, 140, 248, 0.25);
+            border-radius: 14px;
+            padding: 20px
+        }
+
+        .future-box h3 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #a5b4fc;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px
+        }
+
+        .future-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px
+        }
+
+        .future-tag {
+            font-size: 0.7rem;
+            font-weight: 500;
+            padding: 8px 6px;
+            border-radius: 8px;
+            background: rgba(129, 140, 248, 0.06);
+            color: #818cf8;
+            border: 1px dashed rgba(129, 140, 248, 0.2);
+            text-align: center;
+            opacity: 0.85
+        }
+
+        /* Hosting */
+        .hosting-bar {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap
+        }
+
+        .hosting-tag {
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 10px 22px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(139, 92, 246, 0.15));
+            color: #c7d2fe;
+            border: 1px solid rgba(129, 140, 248, 0.25)
+        }
+
+        /* Top info bar */
+        .top-bar {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.12), rgba(139, 92, 246, 0.12));
+            border: 1px solid rgba(129, 140, 248, 0.2);
+            border-radius: 14px;
+            padding: 18px 28px;
+            margin-bottom: 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px
+        }
+
+        .top-bar-left {
+            display: flex;
+            flex-direction: column;
+            gap: 6px
+        }
+
+        .top-bar-links {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap
+        }
+
+        .top-bar-links a {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #a5b4fc;
+            text-decoration: none;
+            padding: 6px 14px;
+            border-radius: 8px;
+            background: rgba(99, 102, 241, 0.12);
+            border: 1px solid rgba(129, 140, 248, 0.2);
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px
+        }
+
+        .top-bar-links a:hover {
+            background: rgba(99, 102, 241, 0.25);
+            color: #e0e7ff;
+            transform: translateY(-1px)
+        }
+
+        .top-bar-right {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            text-align: right
+        }
+
+        .top-bar-right .name {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #e0e7ff
+        }
+
+        .top-bar-right .college {
+            font-size: 0.72rem;
+            color: #a5b4fc;
+            font-weight: 500
+        }
+
+        .top-bar-right .contact {
+            font-size: 0.68rem;
+            color: #818cf8;
+            font-weight: 400
+        }
+
+        .top-bar-right .contact a {
+            color: #818cf8;
+            text-decoration: none
+        }
+
+        .top-bar-right .contact a:hover {
+            color: #c7d2fe;
+            text-decoration: underline
+        }
+
+        /* Credentials */
+        .creds-bar {
+            background: linear-gradient(135deg, rgba(234, 179, 8, 0.08), rgba(251, 191, 36, 0.06));
+            border: 1px solid rgba(234, 179, 8, 0.2);
+            border-radius: 14px;
+            padding: 18px 28px;
+            margin-bottom: 32px
+        }
+
+        .creds-bar h3 {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #fde68a;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px
+        }
+
+        .creds-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px
+        }
+
+        .cred-card {
+            background: rgba(234, 179, 8, 0.06);
+            border: 1px solid rgba(234, 179, 8, 0.15);
+            border-radius: 10px;
+            padding: 12px 16px
+        }
+
+        .cred-card .cred-role {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #fbbf24;
+            margin-bottom: 8px
+        }
+
+        .cred-card .cred-line {
+            font-size: 0.72rem;
+            color: #d4d4d8;
+            margin-bottom: 3px;
+            display: flex;
+            gap: 6px
+        }
+
+        .cred-card .cred-line span {
+            color: #fde68a;
+            font-weight: 600;
+            font-family: 'Fira Code', 'Courier New', monospace;
+            font-size: 0.7rem
+        }
+
+        @media print {
+            body {
+                background: #fff;
+                color: #1e1b4b;
+                padding: 20px
+            }
+
+            .main-title h1 {
+                -webkit-text-fill-color: #4338ca
+            }
+
+            .top-bar {
+                background: #f1f5f9;
+                border-color: #c7d2fe
+            }
+
+            .top-bar-links a {
+                background: #ede9fe;
+                color: #4338ca;
+                border-color: #c7d2fe
+            }
+
+            .top-bar-right .name {
+                color: #1e1b4b
+            }
+
+            .top-bar-right .college {
+                color: #4338ca
+            }
+
+            .top-bar-right .contact,
+            .top-bar-right .contact a {
+                color: #6366f1
+            }
+
+            .creds-bar {
+                background: #fffbeb;
+                border-color: #fde68a
+            }
+
+            .creds-bar h3 {
+                color: #92400e
+            }
+
+            .cred-card {
+                background: #fef9c3;
+                border-color: #fde68a
+            }
+
+            .cred-card .cred-role {
+                color: #92400e
+            }
+
+            .cred-card .cred-line {
+                color: #1e1b4b
+            }
+
+            .cred-card .cred-line span {
+                color: #92400e
+            }
+
+            .layer-header {
+                background: rgba(99, 102, 241, 0.08)
+            }
+
+            .role-card,
+            .frontend-box,
+            .engine-card,
+            .backend-section {
+                background: #f8fafc;
+                border-color: #c7d2fe
+            }
+
+            .role-card li,
+            .module,
+            .engine-card li {
+                color: #4338ca
+            }
+
+            .badge {
+                background: #ede9fe;
+                color: #6366f1
+            }
+
+            .service-tag {
+                background: #dcfce7;
+                color: #166534
+            }
+
+            .db-tag {
+                background: #fef9c3;
+                color: #854d0e
+            }
+
+            .output-card {
+                background: #ecfdf5;
+                color: #065f46
+            }
+
+            .future-tag {
+                background: #ede9fe;
+                color: #6366f1
+            }
+
+            .hosting-tag {
+                background: #ede9fe;
+                color: #4338ca
+            }
+        }
+
+        @media(max-width:900px) {
+
+            .roles-grid,
+            .engines-grid {
+                grid-template-columns: repeat(2, 1fr)
+            }
+
+            .modules-grid {
+                grid-template-columns: repeat(2, 1fr)
+            }
+
+            .outputs-grid,
+            .future-grid {
+                grid-template-columns: repeat(3, 1fr)
+            }
+
+            .backend-grid {
+                grid-template-columns: 1fr
+            }
+
+            .top-bar {
+                flex-direction: column;
+                text-align: center
+            }
+
+            .top-bar-right {
+                text-align: center
+            }
+
+            .creds-grid {
+                grid-template-columns: 1fr
+            }
+        }
+    </style>
 </head>
+
 <body>
-<div class="container">
+    <div class="container">
 
-<div class="main-title">
-<h1>⚙ Goalberg — Enterprise Architecture</h1>
-<p>Enterprise Goal Setting &amp; Performance Tracking Portal &nbsp;|&nbsp; System Architecture Overview</p>
-</div>
+        <!-- TOP INFO BAR -->
+        <div class="top-bar">
+            <div class="top-bar-left">
+                <div class="top-bar-links">
+                    <a href="https://goalberg.vercel.app/" target="_blank" rel="noopener">🌐 Live App:
+                        https://goalberg.vercel.app</a>
+                    <a href="https://github.com/Daulat309/goalberg" target="_blank" rel="noopener">📦 GitHub:
+                        https://github.com/Daulat309/goalberg</a>
+                </div>
+            </div>
+            <div class="top-bar-right">
+                <div class="name">Daulat Sampat Tikhole</div>
+                <div class="college">Pune Institute of Computer Technology, Pune-43</div>
+                <div class="contact"><a href="mailto:daulattikhole309@gmail.com">daulattikhole309@gmail.com</a>
+                    &nbsp;|&nbsp; 8010384306</div>
+            </div>
+        </div>
 
-<!-- LAYER 1: USER ROLES -->
-<div class="layer">
-<div class="layer-header"><span class="num">1</span><h2>User Roles &amp; Responsibilities</h2></div>
-<div class="roles-grid">
-<div class="role-card">
-<h3><span class="icon">👤</span> Employee</h3>
-<ul>
-<li>Create goals</li>
-<li>Submit goals for approval</li>
-<li>Quarterly check-ins</li>
-<li>Update KPI achievements</li>
-</ul>
-</div>
-<div class="role-card">
-<h3><span class="icon">👥</span> Manager (L1)</h3>
-<ul>
-<li>Review &amp; approve goals</li>
-<li>Inline edit targets &amp; weightage</li>
-<li>Quarterly reviews</li>
-<li>Team analytics</li>
-</ul>
-</div>
-<div class="role-card">
-<h3><span class="icon">🛡</span> Admin / HR</h3>
-<ul>
-<li>Governance oversight</li>
-<li>Goal unlock / reopen</li>
-<li>Shared KPI management</li>
-<li>Audit visibility</li>
-<li>Analytics monitoring</li>
-</ul>
-</div>
-</div>
-</div>
+        <!-- LOGIN CREDENTIALS -->
+        <div class="creds-bar">
+            <h3>🔑 Demo Login Credentials</h3>
+            <div class="creds-grid">
+                <div class="cred-card">
+                    <div class="cred-role">👤 Employee Role</div>
+                    <div class="cred-line">Email: <span>employee@goalberg.com</span></div>
+                    <div class="cred-line">Password: <span>Employee@123</span></div>
+                </div>
+                <div class="cred-card">
+                    <div class="cred-role">👥 Manager (L1) Role</div>
+                    <div class="cred-line">Email: <span>manager@goalberg.com</span></div>
+                    <div class="cred-line">Password: <span>Manager@123</span></div>
+                </div>
+                <div class="cred-card">
+                    <div class="cred-role">🛡 Admin / HR Role</div>
+                    <div class="cred-line">Email: <span>admin@goalberg.com</span></div>
+                    <div class="cred-line">Password: <span>Admin@123</span></div>
+                </div>
+            </div>
+            <div
+                style="margin-top:12px;padding:8px 14px;background:rgba(234,179,8,0.05);border:1px solid rgba(234,179,8,0.12);border-radius:8px;font-size:0.72rem;color:#d4d4d8">
+                <strong style="color:#fbbf24">Alternative Access:</strong> Role-based user journey switching is
+                supported for Employee, Manager, and Admin workflows.
+            </div>
+        </div>
 
-<div class="arrow-down">▼ ▼ ▼</div>
+        <div class="main-title">
+            <h1>⚙ Goalberg — Enterprise Architecture</h1>
+            <p>Enterprise Goal Setting &amp; Performance Tracking Portal &nbsp;|&nbsp; System Architecture Overview</p>
+        </div>
 
-<!-- LAYER 2: FRONTEND -->
-<div class="layer">
-<div class="layer-header"><span class="num">2</span><h2>Frontend Application Layer</h2></div>
-<div class="frontend-box">
-<div class="title-row">
-<h3>🖥 Next.js 14 Frontend Application</h3>
-<div class="badge-row">
-<span class="badge">Next.js 14</span>
-<span class="badge">TypeScript</span>
-<span class="badge">Tailwind CSS</span>
-<span class="badge">shadcn/ui</span>
-<span class="badge">Recharts</span>
-</div>
-</div>
-<div class="modules-grid">
-<div class="module">📊 Employee Dashboard</div>
-<div class="module">📋 Manager Dashboard</div>
-<div class="module">⚙ Admin Dashboard</div>
-<div class="module">🎯 Goal Creation UI</div>
-<div class="module">📅 Quarterly Check-in UI</div>
-<div class="module">🔗 Shared KPI Interface</div>
-<div class="module">🛡 Governance Dashboard</div>
-<div class="module">📈 Analytics Dashboard</div>
-</div>
-</div>
-</div>
+        <!-- LAYER 1: USER ROLES -->
+        <div class="layer">
+            <div class="layer-header"><span class="num">1</span>
+                <h2>User Roles &amp; Responsibilities</h2>
+            </div>
+            <div class="roles-grid">
+                <div class="role-card">
+                    <h3><span class="icon">👤</span> Employee</h3>
+                    <ul>
+                        <li>Create goals</li>
+                        <li>Submit goals for approval</li>
+                        <li>Quarterly check-ins</li>
+                        <li>Update KPI achievements</li>
+                    </ul>
+                </div>
+                <div class="role-card">
+                    <h3><span class="icon">👥</span> Manager (L1)</h3>
+                    <ul>
+                        <li>Review &amp; approve goals</li>
+                        <li>Inline edit targets &amp; weightage</li>
+                        <li>Quarterly reviews</li>
+                        <li>Team analytics</li>
+                    </ul>
+                </div>
+                <div class="role-card">
+                    <h3><span class="icon">🛡</span> Admin / HR</h3>
+                    <ul>
+                        <li>Governance oversight</li>
+                        <li>Goal unlock / reopen</li>
+                        <li>Shared KPI management</li>
+                        <li>Audit visibility</li>
+                        <li>Analytics monitoring</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
 
-<div class="arrow-down">▼ ▼ ▼</div>
+        <div class="arrow-down">▼ ▼ ▼</div>
 
-<!-- LAYER 3: BUSINESS WORKFLOW -->
-<div class="layer">
-<div class="layer-header"><span class="num">3</span><h2>Business Workflow Engine</h2></div>
-<div class="engines-grid">
-<div class="engine-card">
-<div class="label">Module A</div>
-<h4>🎯 Goal Creation Engine</h4>
-<ul><li>Goal drafting</li><li>UoM selection</li><li>Weightage management</li></ul>
-</div>
-<div class="engine-card">
-<div class="label">Module B</div>
-<h4>✅ Validation Engine</h4>
-<ul><li>Weightage = 100%</li><li>Max 8 goals</li><li>Min 10% validation</li></ul>
-</div>
-<div class="engine-card">
-<div class="label">Module C</div>
-<h4>🔄 Approval Workflow</h4>
-<ul><li>Approve / reject</li><li>Inline editing</li><li>Goal locking</li><li>Admin reopen workflow</li></ul>
-</div>
-<div class="engine-card">
-<div class="label">Module D</div>
-<h4>📅 Quarterly Planning</h4>
-<ul><li>Auto quarterly targets</li><li>Planned vs Actual tracking</li><li>One check-in per quarter</li></ul>
-</div>
-<div class="engine-card">
-<div class="label">Module E</div>
-<h4>📐 KPI Scoring Engine</h4>
-<ul><li>Numeric KPI scoring</li><li>Percentage KPI scoring</li><li>Timeline KPI scoring</li><li>Zero-based KPI scoring</li></ul>
-</div>
-<div class="engine-card">
-<div class="label">Module F</div>
-<h4>🔗 Shared KPI Engine</h4>
-<ul><li>Org KPI assignment</li><li>Multi-employee distribution</li><li>Shared governance flows</li></ul>
-</div>
-<div class="engine-card">
-<div class="label">Module G</div>
-<h4>🛡 Governance &amp; Audit</h4>
-<ul><li>Completion monitoring</li><li>Governance lifecycle</li><li>Audit-ready architecture</li></ul>
-</div>
-<div class="engine-card">
-<div class="label">Module H</div>
-<h4>📈 Analytics Engine</h4>
-<ul><li>QoQ analytics</li><li>Goal distribution</li><li>Manager effectiveness</li><li>KPI dashboards</li></ul>
-</div>
-</div>
-</div>
+        <!-- LAYER 2: FRONTEND -->
+        <div class="layer">
+            <div class="layer-header"><span class="num">2</span>
+                <h2>Frontend Application Layer</h2>
+            </div>
+            <div class="frontend-box">
+                <div class="title-row">
+                    <h3>🖥 Next.js 14 Frontend Application</h3>
+                    <div class="badge-row">
+                        <span class="badge">Next.js 14</span>
+                        <span class="badge">TypeScript</span>
+                        <span class="badge">Tailwind CSS</span>
+                        <span class="badge">shadcn/ui</span>
+                        <span class="badge">Recharts</span>
+                    </div>
+                </div>
+                <div class="modules-grid">
+                    <div class="module">📊 Employee Dashboard</div>
+                    <div class="module">📋 Manager Dashboard</div>
+                    <div class="module">⚙ Admin Dashboard</div>
+                    <div class="module">🎯 Goal Creation UI</div>
+                    <div class="module">📅 Quarterly Check-in UI</div>
+                    <div class="module">🔗 Shared KPI Interface</div>
+                    <div class="module">🛡 Governance Dashboard</div>
+                    <div class="module">📈 Analytics Dashboard</div>
+                </div>
+            </div>
+        </div>
 
-<div class="arrow-down">▼ ▼ ▼</div>
+        <div class="arrow-down">▼ ▼ ▼</div>
 
-<!-- LAYER 4: BACKEND -->
-<div class="layer">
-<div class="layer-header"><span class="num">4</span><h2>Backend &amp; Database Layer</h2></div>
-<div class="backend-grid">
-<div class="backend-section">
-<h3>🔧 Supabase Backend Services</h3>
-<div class="service-list">
-<span class="service-tag">Supabase Auth</span>
-<span class="service-tag">PostgreSQL Database</span>
-<span class="service-tag">REST APIs</span>
-<span class="service-tag">Role-Based Access</span>
-<span class="service-tag">Real-time APIs</span>
-</div>
-</div>
-<div class="backend-section">
-<h3>🗄 Database Tables</h3>
-<div class="service-list">
-<span class="db-tag">goals</span>
-<span class="db-tag">quarterly_plans</span>
-<span class="db-tag">quarterly_updates</span>
-<span class="db-tag">shared_goals</span>
-<span class="db-tag">shared_goal_assignments</span>
-<span class="db-tag">audit_logs</span>
-</div>
-</div>
-</div>
-</div>
+        <!-- LAYER 3: BUSINESS WORKFLOW -->
+        <div class="layer">
+            <div class="layer-header"><span class="num">3</span>
+                <h2>Business Workflow Engine</h2>
+            </div>
+            <div class="engines-grid">
+                <div class="engine-card">
+                    <div class="label">Module A</div>
+                    <h4>🎯 Goal Creation Engine</h4>
+                    <ul>
+                        <li>Goal drafting</li>
+                        <li>UoM selection</li>
+                        <li>Weightage management</li>
+                    </ul>
+                </div>
+                <div class="engine-card">
+                    <div class="label">Module B</div>
+                    <h4>✅ Validation Engine</h4>
+                    <ul>
+                        <li>Weightage = 100%</li>
+                        <li>Max 8 goals</li>
+                        <li>Min 10% validation</li>
+                    </ul>
+                </div>
+                <div class="engine-card">
+                    <div class="label">Module C</div>
+                    <h4>🔄 Approval Workflow</h4>
+                    <ul>
+                        <li>Approve / reject</li>
+                        <li>Inline editing</li>
+                        <li>Goal locking</li>
+                        <li>Admin reopen workflow</li>
+                    </ul>
+                </div>
+                <div class="engine-card">
+                    <div class="label">Module D</div>
+                    <h4>📅 Quarterly Planning</h4>
+                    <ul>
+                        <li>Auto quarterly targets</li>
+                        <li>Planned vs Actual tracking</li>
+                        <li>One check-in per quarter</li>
+                    </ul>
+                </div>
+                <div class="engine-card">
+                    <div class="label">Module E</div>
+                    <h4>📐 KPI Scoring Engine</h4>
+                    <ul>
+                        <li>Numeric KPI scoring</li>
+                        <li>Percentage KPI scoring</li>
+                        <li>Timeline-based KPI evaluation</li>
+                        <li>Zero-based KPI scoring</li>
+                    </ul>
+                </div>
+                <div class="engine-card">
+                    <div class="label">Module F</div>
+                    <h4>🔗 Shared KPI Engine</h4>
+                    <ul>
+                        <li>Org KPI assignment</li>
+                        <li>Multi-employee distribution</li>
+                        <li>Shared governance flows</li>
+                    </ul>
+                </div>
+                <div class="engine-card">
+                    <div class="label">Module G</div>
+                    <h4>🛡 Governance &amp; Audit</h4>
+                    <ul>
+                        <li>Completion monitoring</li>
+                        <li>Governance lifecycle</li>
+                        <li>Audit logging &amp; governance architecture</li>
+                    </ul>
+                </div>
+                <div class="engine-card">
+                    <div class="label">Module H</div>
+                    <h4>📈 Analytics Engine</h4>
+                    <ul>
+                        <li>QoQ analytics</li>
+                        <li>Goal distribution</li>
+                        <li>Manager effectiveness</li>
+                        <li>KPI dashboards</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
 
-<div class="arrow-down">▼ ▼ ▼</div>
+        <div class="arrow-down">▼ ▼ ▼</div>
 
-<!-- LAYER 5: OUTPUTS -->
-<div class="layer">
-<div class="layer-header"><span class="num">5</span><h2>Analytics &amp; Governance Outputs</h2></div>
-<div class="outputs-grid">
-<div class="output-card">📊 Enterprise Analytics</div>
-<div class="output-card">📈 KPI Trends</div>
-<div class="output-card">🛡 Governance Dashboard</div>
-<div class="output-card">✅ Completion Monitoring</div>
-<div class="output-card">📝 Audit Tracking</div>
-<div class="output-card">👥 Manager Effectiveness</div>
-</div>
-</div>
+        <!-- LAYER 4: BACKEND -->
+        <div class="layer">
+            <div class="layer-header"><span class="num">4</span>
+                <h2>Backend &amp; Database Layer</h2>
+            </div>
+            <div class="backend-grid">
+                <div class="backend-section">
+                    <h3>🔧 Supabase Backend Services</h3>
+                    <div class="service-list">
+                        <span class="service-tag">Supabase Auth</span>
+                        <span class="service-tag">PostgreSQL Database</span>
+                        <span class="service-tag">REST APIs</span>
+                        <span class="service-tag">Role-Based Access</span>
+                        <span class="service-tag">Real-time APIs</span>
+                    </div>
+                </div>
+                <div class="backend-section">
+                    <h3>🗄 Database Tables</h3>
+                    <div class="service-list">
+                        <span class="db-tag">goals</span>
+                        <span class="db-tag">quarterly_plans</span>
+                        <span class="db-tag">quarterly_updates</span>
+                        <span class="db-tag">shared_goals</span>
+                        <span class="db-tag">shared_goal_assignments</span>
+                        <span class="db-tag">audit_logs</span>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-<div class="arrow-down" style="opacity:0.4">· · ·</div>
+        <div class="arrow-down">▼ ▼ ▼</div>
 
-<!-- LAYER 6: FUTURE -->
-<div class="layer">
-<div class="layer-header"><span class="num">6</span><h2>Future-Ready Enterprise Integrations</h2></div>
-<div class="future-box">
-<h3>🔮 Planned Integrations</h3>
-<div class="future-grid">
-<div class="future-tag">Microsoft Entra ID (Azure AD)</div>
-<div class="future-tag">SSO Integration</div>
-<div class="future-tag">Teams Notifications</div>
-<div class="future-tag">Email Notifications</div>
-<div class="future-tag">Escalation Engine</div>
-<div class="future-tag">Org Hierarchy Sync</div>
-<div class="future-tag">Predictive Analytics</div>
-</div>
-</div>
-</div>
+        <!-- LAYER 5: OUTPUTS -->
+        <div class="layer">
+            <div class="layer-header"><span class="num">5</span>
+                <h2>Analytics &amp; Governance Outputs</h2>
+            </div>
+            <div class="outputs-grid">
+                <div class="output-card">📊 Enterprise Analytics</div>
+                <div class="output-card">📈 KPI Trends</div>
+                <div class="output-card">🛡 Governance Dashboard</div>
+                <div class="output-card">✅ Completion Monitoring</div>
+                <div class="output-card">📝 Audit Tracking</div>
+                <div class="output-card">👥 Manager Effectiveness</div>
+            </div>
+        </div>
 
-<!-- LAYER 7: HOSTING -->
-<div class="layer" style="margin-top:24px">
-<div class="layer-header"><span class="num">7</span><h2>Hosting &amp; Deployment</h2></div>
-<div class="hosting-bar">
-<span class="hosting-tag">▲ Vercel Hosting</span>
-<span class="hosting-tag">⚡ Supabase Cloud Backend</span>
-<span class="hosting-tag">🏗 Modular Enterprise SaaS Architecture</span>
-</div>
-</div>
+        <div class="arrow-down" style="opacity:0.4">· · ·</div>
 
-<div style="text-align:center;margin-top:36px;padding:16px;border-top:1px solid rgba(129,140,248,0.15)">
-<p style="font-size:0.7rem;color:#64748b">Goalberg Enterprise Architecture v1.0 &nbsp;|&nbsp; AtomQuest 2026 &nbsp;|&nbsp; Confidential</p>
-</div>
+        <!-- LAYER 6: FUTURE -->
+        <div class="layer">
+            <div class="layer-header"><span class="num">6</span>
+                <h2>Future-Ready Enterprise Integrations</h2>
+            </div>
+            <div class="future-box">
+                <h3>🔮 Planned Integrations</h3>
+                <div class="future-grid">
+                    <div class="future-tag">Microsoft Entra ID (Azure AD)</div>
+                    <div class="future-tag">SSO Integration</div>
+                    <div class="future-tag">Teams Notifications</div>
+                    <div class="future-tag">Email Notifications</div>
+                    <div class="future-tag">Escalation Engine</div>
+                    <div class="future-tag">Org Hierarchy Sync</div>
+                    <div class="future-tag">Predictive Analytics</div>
+                </div>
+            </div>
+        </div>
 
-</div>
+        <!-- LAYER 7: HOSTING -->
+        <div class="layer" style="margin-top:24px">
+            <div class="layer-header"><span class="num">7</span>
+                <h2>Hosting &amp; Deployment</h2>
+            </div>
+            <div class="hosting-bar">
+                <span class="hosting-tag">▲ Vercel Hosting</span>
+                <span class="hosting-tag">⚡ Supabase Cloud Backend</span>
+                <span class="hosting-tag">🏗 Modular Enterprise SaaS Architecture</span>
+            </div>
+        </div>
+
+        <div style="text-align:center;margin-top:36px;padding:16px;border-top:1px solid rgba(129,140,248,0.15)">
+            <p style="font-size:0.7rem;color:#64748b">Goalberg Enterprise Architecture v1.0 &nbsp;|&nbsp; AtomQuest 2026
+                &nbsp;|&nbsp; Daulat Sampat Tikhole &nbsp;|&nbsp; PICT, Pune-43</p>
+            <p style="font-size:0.65rem;color:#475569;margin-top:6px;font-style:italic">Scalable enterprise workflow
+                platform for KPI governance, performance tracking, analytics, and organizational alignment.</p>
+        </div>
+
+    </div>
 </body>
+
 </html>
