@@ -390,4 +390,15 @@ export async function reopenGoal(
     .eq("id", goalId);
 }
 
+export async function getGoalsByEmployee(
+  employeeId: string
+) {
+
+  return await supabase
+    .from("goals")
+    .select("*")
+    .eq("employee_id", employeeId);
+
+}
+
 /*  "5d05e6b8-76a9-4a01-854e-93587cbeea4d" */ 

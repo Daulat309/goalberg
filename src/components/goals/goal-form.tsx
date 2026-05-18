@@ -10,6 +10,7 @@ import {
 import {
     createGoal,
     updateGoal,
+    getGoalsByEmployee,
 } from "@/services/goal.service";
 
 
@@ -29,7 +30,7 @@ export default function GoalForm({
         handleSubmit,
         reset,
         formState: { errors },
-    } = useForm<GoalFormData>({
+    } = useForm<any>({
         resolver: zodResolver(goalSchema),
 
         defaultValues: editingGoal,
@@ -201,7 +202,7 @@ export default function GoalForm({
 
                 {errors.weightage && (
                     <p className="mt-1 text-sm text-red-500">
-                        {errors.weightage.message}
+                        {String(errors.weightage.message)}
                     </p>
                 )}
             </div>

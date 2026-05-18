@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import {
     updateGoalByManager,
+    getGoalsByEmployee,
 } from "@/services/goal.service";
 
 import { toast } from "sonner";
